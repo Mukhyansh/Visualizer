@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <title>Sorting and Searching Visualizer!</title>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="style.css">
+          <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap" rel="stylesheet">
+        <script src="scripts.js" defer></script>
+    </head>
+<body>
+    <div id="md1">
+        <div id="udiv">
+            <span>--SortingAndSearching!</span>
+            <form id="f1">
+                <select id="sel1" required>
+                    <option value="en">English</option>
+                    <option value="Hindi">Hindi</option>
+                </select>
+            </form>
+            <div id="ldiv">
+                <a href="https://www.youtube.com/watch?v=dQw4w9WgXcQ" target="_blank">Login</a>
+            </div>
+        </div>
+
+        <div id="modeSelector">
+            <button class="mode-btn active" data-mode="sorting">SORTING</button>
+            <button class="mode-btn" data-mode="searching">SEARCHING</button>
+        </div>
+
+        <div id="algorithmButtons">
+            <label id="algoLabel">Select Sorting Algorithm:</label>
+            <div id="sortingAlgos">
+                <button class="algo-btn active" data-algo="bubble" title="Bubble Sort">BUB</button>
+                <button class="algo-btn disabled" data-algo="selection" title="Selection Sort - Coming Soon">SEL</button>
+                <button class="algo-btn disabled" data-algo="insertion" title="Insertion Sort - Coming Soon">INS</button>
+                <button class="algo-btn disabled" data-algo="merge" title="Merge Sort - Coming Soon">MER</button>
+                <button class="algo-btn disabled" data-algo="quick" title="Quick Sort - Coming Soon">QUI</button>
+                <button class="algo-btn disabled" data-algo="heap" title="Heap Sort - Coming Soon">HEA</button>
+            </div>
+            <div id="searchingAlgos" class="hidden">
+                <button class="algo-btn active" data-algo="linear" title="Linear Search">LIN</button>
+                <button class="algo-btn disabled" data-algo="binary" title="Binary Search - Coming Soon">BIN</button>
+            </div>
+        </div>
+
+        <div id="searchContainer">
+            <input type="text" id="searchInput" placeholder="Search algorithms (e.g., bubble, linear, merge...)">
+        </div>
+
+        <div id="content">
+            <div id="visualizationArea">
+                <div id="controls">
+                    <button class="btn btn-primary" id="startBtn">Sort</button>
+                    <button class="btn btn-secondary" id="resetBtn">Reset</button>
+                    <button class="btn btn-secondary" id="randomBtn">Randomize</button>
+                    
+                    <div class="control-group">
+                        <label>Size: </label>
+                        <input type="range" id="sizeSlider" min="10" max="100" value="30">
+                        <span id="sizeValue">30</span>
+                    </div>
+                    
+                    <div class="control-group">
+                        <label>Speed: </label>
+                        <input type="range" id="speedSlider" min="1" max="100" value="50">
+                        <span id="speedValue">50</span>
+                    </div>
+                </div>
+                <div id="searchControls">
+                    <div class="control-group">
+                        <label>Target Value: </label>
+                        <input type="number" id="targetValue" min="10" max="310" value="100">
+                    </div>
+                    <button class="btn btn-primary" id="searchBtn">Search</button>
+                    <button class="btn btn-secondary" id="addTargetBtn">Add Target to Array</button>
+                </div>
+
+                <div id="searchResult"></div>
+
+                <div id="arrayContainer"></div>
+
+                <div id="algoInfo">
+                    <h3>Bubble Sort</h3>
+                    <p>Repeatedly steps through the list, compares adjacent elements and swaps them if they're in the wrong order.</p>
+                    <p><strong>Time Complexity:</strong> O(n²) | <strong>Space Complexity:</strong> O(1)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="lastdiv">
+        *This site is made with the reference of <a id="lastlink"  href="https://visualgo.net/en" target="_blank">VisuAlgo</a>*.
+    </div>
+    </body>
+</html>
