@@ -1,5 +1,4 @@
-
-        let array = [];
+let array = [];
         let arraySize = 30;
         let animationSpeed = 50;
         let isSorting = false;
@@ -99,7 +98,7 @@
                     const valueLabel = document.createElement('div');
                     valueLabel.className = 'bar-value';
                     valueLabel.textContent = value;
-                    bar.appendChild(valueLabel);
+                    // bar.appendChild(valueLabel);
                 }
                 
                 arrayContainer.appendChild(bar);
@@ -109,7 +108,7 @@
         function sleep(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
-
+        //bubble sort
         async function bubbleSort() {
             const n = array.length;
             
@@ -137,6 +136,282 @@
             startBtn.textContent = 'Sort';
         }
 
+
+        async function selectionSort() {
+            const n = array.length;
+
+            for (let i = 0; i < n - 1; i++) {
+                if (!isSorting) return;
+
+                let minIndex = i;
+
+                renderArray([i], [], [], -1);
+                await sleep(101 - animationSpeed);
+
+                for (let j = i + 1; j < n; j++) {
+                    if (!isSorting) return;
+
+                    renderArray([minIndex, j], [], [], -1);
+                    await sleep(101 - animationSpeed);
+
+                    if (array[j] < array[minIndex]) {
+                        minIndex = j;
+                    }
+                }
+
+                if (minIndex !== i) {
+                    renderArray([], [i, minIndex], [], -1);
+                    await sleep(101 - animationSpeed);
+
+                    let temp = array[i];
+                    array[i] = array[minIndex];
+                    array[minIndex] = temp;
+
+                    renderArray([], [i, minIndex], [], -1);
+                    await sleep(101 - animationSpeed);
+                }
+            }
+
+            renderArray([], [], Array.from({ length: n }, (_, i) => i));
+
+            isSorting = false;
+            startBtn.disabled = false;
+            startBtn.textContent = 'Sort';
+        }
+        async function insertionSort() {
+            const n = array.length;
+
+            for (let i = 1; i < n; i++) {
+                if (!isSorting) return;
+
+                let key = array[i];
+                let j = i - 1;
+
+                renderArray([i], [], [], -1);
+                await sleep(101 - animationSpeed);
+
+                while (j >= 0 && array[j] > key) {
+                    if (!isSorting) return;
+
+                    renderArray([j, j+1], [], [], -1);
+                    await sleep(101 - animationSpeed);
+
+                    array[j + 1] = array[j]; 
+                    j--;
+
+                    renderArray([], [j+1], [], -1);
+                    await sleep(101 - animationSpeed);
+                }
+
+                array[j + 1] = key;
+
+                renderArray([], [j+1], [], -1);
+                await sleep(101 - animationSpeed);
+            }
+
+            renderArray([], [], Array.from({ length: n }, (_, i) => i));
+
+            isSorting = false;
+            startBtn.disabled = false;
+            startBtn.textContent = "Sort";
+        }
+        async function mergeSortHelper(left, right) {
+            if (!isSorting) return;
+            if (left >= right) return;
+
+            const mid = Math.floor((left + right) / 2);
+
+            await mergeSortHelper(left, mid);
+            await mergeSortHelper(mid + 1, right);
+
+            let i = left, j = mid + 1;
+            let temp = [];
+
+            while (i <= mid && j <= right) {
+                if (!isSorting) return;
+
+                renderArray([i, j], [], [], -1);
+                await sleep(101 - animationSpeed);
+
+                if (array[i] <= array[j]) {
+                    temp.push(array[i]);
+                    i++;
+                } else {
+                    temp.push(array[j]);
+                    j++;
+                }
+            }
+            while (i <= mid) temp.push(array[i++]);
+            while (j <= right) temp.push(array[j++]);
+
+            for (let k = left; k <= right; k++) {
+            array[k] = temp[k - left];
+
+                renderArray([], [k], [], -1);
+                await sleep(81 - animationSpeed);
+            }
+        }
+
+        async function mergeSort() {
+            await mergeSortHelper(0, array.length - 1);
+
+            renderArray([], [], Array.from({length: array.length}, (_, i) => i));
+            isSorting = false;
+            startBtn.disabled = false;
+            startBtn.textContent = "Sort";
+        }
+
+        async function partition(low, high) {
+            let pivot = array[high];
+            let i = low - 1;
+
+            for (let j = low; j < high; j++) {
+                if (!isSorting) return -1;
+
+                renderArray([j, high], [], [], -1);
+                await sleep(101 - animationSpeed);
+
+                if (array[j] < pivot) {
+                    i++;
+                    [array[i], array[j]] = [array[j], array[i]];
+
+                    renderArray([], [i, j], [], -1);
+                    await sleep(101 - animationSpeed);
+                }
+            }
+
+            [array[i + 1], array[high]] = [array[high], array[i + 1]];
+
+            renderArray([], [i + 1, high], [], -1);
+            await sleep(101 - animationSpeed);
+
+            return i + 1;
+        }
+        async function quickSortHelper(low, high) {
+            if (!isSorting) return;
+            if (low < high) {
+                let pi = await partition(low, high);
+                if (pi === -1) return;
+
+                await quickSortHelper(low, pi - 1);
+                await quickSortHelper(pi + 1, high);
+            }
+        }
+
+        async function quickSort() {
+            await quickSortHelper(0, array.length - 1);
+
+            renderArray([], [], Array.from({length: array.length}, (_, i) => i));
+            isSorting = false;
+            startBtn.disabled = false;
+            startBtn.textContent = "Sort";
+        }
+
+        async function heapify(n, i) {
+            if (!isSorting) return;
+
+            let largest = i;
+            let left = 2 * i + 1;
+            let right = 2 * i + 2;
+
+            if (left < n) {
+                renderArray([i, left], [], [], -1);
+                await sleep(101 - animationSpeed);
+                if (array[left] > array[largest]) largest = left;
+            }
+
+            if (right < n) {
+                renderArray([i, right], [], [], -1);
+                await sleep(101 - animationSpeed);
+                if (array[right] > array[largest]) largest = right;
+            }
+
+            if (largest !== i) {
+                [array[i], array[largest]] = [array[largest], array[i]];
+
+                renderArray([], [i, largest], [], -1);
+                await sleep(101 - animationSpeed);
+
+                await heapify(n, largest);
+            }
+        }
+
+        async function heapSort() {
+            let n = array.length;
+
+            for (let i = Math.floor(n / 2) - 1; i >= 0; i--) {
+                if (!isSorting) return;
+                await heapify(n, i);
+            }
+
+            for (let i = n - 1; i > 0; i--) {
+                if (!isSorting) return;
+
+                [array[0], array[i]] = [array[i], array[0]];
+                renderArray([], [0, i], [], -1);
+                await sleep(101 - animationSpeed);
+
+                await heapify(i, 0);
+            }
+
+            renderArray([], [], Array.from({length: n}, (_, i) => i));
+            isSorting = false;
+            startBtn.disabled = false;
+            startBtn.textContent = "Sort";
+        }
+
+
+
+        async function binarySearch(target) {
+            const n = array.length;
+            let left = 0;
+            let right = n - 1;
+
+            searchResult.classList.remove('show');
+
+            while (left <= right) {
+                if (!isSearching) return;
+
+                let mid = Math.floor((left + right) / 2);
+
+        
+                renderArray([mid], [], [], -1, true);
+                await sleep(151 - animationSpeed);
+
+                if (array[mid] === target) {
+                renderArray([], [], [], mid, true);
+                    searchResult.textContent = `✓ Target ${target} found at index ${mid}!`;
+                    searchResult.style.color = '#4CAF50';
+                    searchResult.classList.add('show');
+
+                    isSearching = false;
+                    searchBtn.disabled = false;
+                    searchBtn.textContent = "Search";
+                    return;
+                }
+
+                
+                renderArray([], [], [mid], -1, true);
+                await sleep(101 - animationSpeed);
+
+                if (array[mid] < target) {
+                    left = mid + 1;   
+                } else {
+                    right = mid - 1;  
+                }
+            }
+
+            renderArray([], [], Array.from({ length: n }, (_, i) => i), -1, true);
+            searchResult.textContent = `✗ Target ${target} not found in the array.`;
+            searchResult.style.color = '#FF4500';
+            searchResult.classList.add('show');
+
+            isSearching = false;
+            searchBtn.disabled = false;
+            searchBtn.textContent = 'Search';
+        }
+
+     
         async function linearSearch(target) {
             const n = array.length;
             searchResult.classList.remove('show');
@@ -149,7 +424,7 @@
                 
                 if (array[i] === target) {
                     renderArray([], [], [], i, true);
-                    searchResult.textContent = `✓ Target ${target} found at index ${i}!`;
+                    searchResult.textContent = ` Target ${target} found at index ${i}!`;
                     searchResult.style.color = '#4CAF50';
                     searchResult.classList.add('show');
                     isSearching = false;
@@ -170,7 +445,7 @@
             searchBtn.disabled = false;
             searchBtn.textContent = 'Search';
         }
-
+        
         async function startSorting() {
             if (isSorting) {
                 isSorting = false;
@@ -184,6 +459,18 @@
             
             if (currentAlgorithm === 'bubble') {
                 await bubbleSort();
+            }
+            else if(currentAlgorithm === 'selection'){
+                await selectionSort();
+            }
+            else if(currentAlgorithm === 'insertion'){
+                await insertionSort();
+            }else if(currentAlgorithm==='merge'){
+                await mergeSort();
+            }else if(currentAlgorithm == 'quick'){
+                await quickSort();
+            }else if(currentAlgorithm=='heap'){
+                await heapSort();
             }
             
             sizeSlider.disabled = false;
@@ -208,7 +495,10 @@
             
             if (currentAlgorithm === 'linear') {
                 await linearSearch(target);
+            } else if(currentAlgorithm=='binary'){
+                await binarySearch(target);
             }
+
             
             sizeSlider.disabled = false;
         }
