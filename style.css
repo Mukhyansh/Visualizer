@@ -21,11 +21,12 @@ body {
             font-family: 'Poppins', sans-serif;
             padding: 0 20px;
             font-size: larger;
+            /* justify-content: left; */
         }
 
         #f1{
             display: flex;
-            align-items: center;
+            align-items: left;
             gap: 15px;
         }
 
@@ -37,6 +38,7 @@ body {
             border-radius: 5px;
             font-family: 'Poppins', sans-serif;
             cursor: pointer;
+            /* align-items: left; */
         }
 
         #ldiv {
@@ -358,6 +360,4 @@ body {
             display: block;
         }
 
-        .hidden {
-            display: none !important;
-        }
+      
