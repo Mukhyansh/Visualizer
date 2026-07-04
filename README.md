@@ -25,6 +25,6 @@ JavaScript
 
 # Run Locally
 
-git clone https://github.com/your-username/sorting-searching-visualizer.git
+git clone https://github.com/Mukhyansh/sorting-searching-visualizer.git
 cd sorting-searching-visualizer
 open index.html
